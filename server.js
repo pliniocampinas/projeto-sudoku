@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
       console.log(JSON.parse(data).explanation);
 
       // JSON.parse(data).explanation
-      conteudo = '<h1>' + 'Imagem NASA' + '</h1>'
+      conteudo = '<h1>' + 'Imagem API da NASA' + '</h1>'
 
       conteudo += ' <img src="' + JSON.parse(data).url + '"></img>'
 
