@@ -5,32 +5,18 @@ var path = require('path');
 var dynamicPages = require('./dynamic-pages');
 var resourceFactory = require('./resource-factory');
 
-const pagesPath = []
-pagesPath['/'] = '/index.html'
-pagesPath[''] = '/index.html'
-// responses['/inscreva-se'] = '<h1>Inscreva-se</h1>'
-// responses['/local'] = '<h1>Local</h1>'
-// responses['/contato'] = '<h1>Contato</h1>'
-// responses['/naoExiste'] = '<h1>URL sem resposta definida!</h1>'
-
-var getPagePath = (url) => {
-    return pagesPath[url]
-}
-
 
 http.createServer(function (request, response) {
-    console.log('request ', request.url);
+    console.log('request ', request.data);
 
-    var pagePath = getPagePath(request.url);
-    if(!(pagePath === undefined)) {
-        filePath = '.' + pagePath;
-    } else {
-        filePath = '.' + getPagePath('404');
-    }
+    var resource = resourceFactory.getResource(request.url, request.data);
+    var filePath = '';
+    if(resource.type === 'static')
+        filePath = '.' + resource.content;
+    else if(resource.type === 'dynamic')
+        filePath = '';
 
-    var encontrouPagina = !(pagePath === undefined)
-
-    var extname = pagePath === undefined? '.html': String(path.extname(filePath)).toLowerCase();
+    var extname = filePath === ''? '.html': String(path.extname(filePath)).toLowerCase();
     var contentType = 'text/html';
     var mimeTypes = {
         '.html': 'text/html',
@@ -49,11 +35,9 @@ http.createServer(function (request, response) {
         '.svg': 'application/image/svg+xml'
     };
 
-    // contentType = mimeTypes[extname] || 'application/octet-stream';
     console.log(request.url)
-
     
-    if(encontrouPagina) {
+    if(resource.type === 'static') {
         console.log('Pagina estatica encontrada, lendo file path:' + filePath);
         fs.readFile(filePath, function(error, content) {
             if (error) {    
@@ -77,15 +61,14 @@ http.createServer(function (request, response) {
 
     } else {
         console.log('Pagina estatica NAO encontrada: ' + request.url);
-        const content = dynamicPages.getDynamicPageContent(request.url);
         if(request.url == '/favicon.ico') {
             response.writeHead(200, { 'Content-Type': contentType });
             response.end(content, 'utf-8');
         }
-        else if( typeof content === 'string' ) {
-            console.log("Content" + content)
+        else if( typeof resource.content === 'string' ) {
+            console.log("Content" + resource.content)
             response.writeHead(200, { 'Content-Type': contentType });
-            response.end(content, 'utf-8');
+            response.end(resource.content, 'utf-8');
         }
         else {
             fs.readFile('./404.html', function(error, content) {

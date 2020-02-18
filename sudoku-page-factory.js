@@ -26,6 +26,7 @@
 // var getHtml = (bodyContent, scriptTag) => {
 //    
 // };
+// import axios from 'axios'
 
 var getScript = () => {
 
@@ -35,12 +36,9 @@ var getScript = () => {
     
     <script>
 
-    import axios from 'axios';
-
-
     function submitSudoku() {
             
-        var valores; 
+        var valores = []; 
         var n = 1;
         for (var i = 0; i < 9; i++) {
             for (var j = 0; j < 9; j++) {
@@ -54,8 +52,7 @@ var getScript = () => {
 
         axios.post(
             '/vetor-tabuleiro',
-            valores,
-            { options }
+            valores
         );
         
     };
@@ -65,7 +62,7 @@ var getScript = () => {
         var inputs = document.querySelectorAll(".casa-tabuleiro");
 
         inputs.forEach((input, index) => {
-            input.value = ;
+            input.value = 0;
         });
     };
 
@@ -139,7 +136,7 @@ var getHtml = (bodyContent, scriptTag) => {
 
 module.exports = {
 
-    getPageSudoku:  () => {
+    getPage:  () => {
         return getHtml(getBody(), getScript());
     }
     

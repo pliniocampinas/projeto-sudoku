@@ -1,28 +1,49 @@
+// Paginas de conteudo
 var sudokuPageFactory = require('./sudoku-page-factory');
-var dynamicPages = require('./dynamic-pages');
 
 const resources = [
-    {path = '', type = 'static', content: 'index.html'},
-    {path = '/', type = 'static', content: 'index.html'},
-    {path = 'sudoku-page', type = 'dynamic', content: ''},
-    {}
+    {url: '', type: 'static', content: 'index.html', status: 200},
+    {url: '/', type: 'static', content: 'index.html', status: 200},
+    {url: '404', type: 'static', content: '404.html', status: 404},
+    {url: '/sudoku', type: 'dynamic', content: '', status: 200},
+    {url: '/vetor-tabuleiro', type: 'data', content: '', status: 200}
 ];
 
-var getResource = (path) => {
-    var resource = resources.filter(x => x.path == path)[0];
-    
-    if(resource.type == 'static')
-      return resource.content;
-    else if(resource.type == 'dynamic')
-      return dynamicPages.getDynamicPageContent(path);
-};
+var getDynamicPageContent = (url) => {
+    console.log(`getDynamicPageContent da url [${url}]`);
+    if(url === '/sudoku')
+        return sudokuPageFactory.getPage();
+    else
+        return '';
+}
+
+var getDataResource = (url) => {
+    console.log(`getDynamicPageContent da url [${url}]`);
+    if(url === '/vetor-tabuleiro')
+        return sudokuPageFactory.getPage();
+    else
+        return '';
+}
+
 
 module.exports = {
 
-    getPage:  (url) => {
-        console.log(`getPage da url [${url}]`);
-        if(url === '/sudoku')
-            return sudokuPageFactory.getPageSudoku();
+    getResource: (url, body) => {
+        var resource = resources.filter(x => x.url == url)[0];
+        console.log(body);
+        if(resource === undefined)
+            resource = {url: '404', type: 'static', content: '404.html'};
+        if(resource.type == 'static')
+          return resource;
+        else if(resource.type == 'dynamic') {
+            resource.content = getDynamicPageContent(url);
+            return resource;
+        }
+        else if(resource.type == 'data') {
+            resource.content = getDataResource();
+            return resource;
+        }
+        else
+            return resource;
     }
-    
 }
