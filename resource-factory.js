@@ -2,11 +2,12 @@
 var sudokuPageFactory = require('./sudoku-page-factory');
 
 const resources = [
-    {url: '', type: 'static', content: 'index.html', status: 200},
-    {url: '/', type: 'static', content: 'index.html', status: 200},
-    {url: '404', type: 'static', content: '404.html', status: 404},
-    {url: '/sudoku', type: 'dynamic', content: '', status: 200},
-    {url: '/vetor-tabuleiro', type: 'data', content: '', status: 200}
+    {url: '', type: 'static', contentType: 'text/html', content: 'index.html', status: 200},
+    {url: '/', type: 'static', contentType: 'text/html', content: 'index.html', status: 200},
+    {url: '/favicon.ico', type: 'static', contentType: 'image/x-icon', content: 'favicon.ico', status: 200},
+    {url: '404', type: 'static', contentType: 'text/html', content: '404.html', status: 404},
+    {url: '/sudoku', type: 'dynamic', contentType: 'text/html', content: '', status: 200},
+    {url: '/vetor-tabuleiro', type: 'data', contentType: 'text/html', content: '', status: 200}
 ];
 
 var getDynamicPageContent = (url) => {
@@ -30,7 +31,7 @@ module.exports = {
 
     getResource: (url, body) => {
         var resource = resources.filter(x => x.url == url)[0];
-        console.log(body);
+        // console.log(body);
         if(resource === undefined)
             resource = {url: '404', type: 'static', content: '404.html'};
         if(resource.type == 'static')

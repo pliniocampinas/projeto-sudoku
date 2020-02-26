@@ -109,8 +109,6 @@ var getBody = () => {
 
 var getHtml = (bodyContent, scriptTag) => {
 
-    console.log("getSudokuHtml");
-
     var fullHtml =  
     `
     <html lang="en">
@@ -130,7 +128,6 @@ var getHtml = (bodyContent, scriptTag) => {
     </body>
     </html>
     `;
-    console.log(typeof fullHtml);
     return fullHtml;
 };
 
