@@ -44,15 +44,18 @@ var getScript = () => {
             for (var j = 0; j < 9; j++) {
 
                 var x = document.getElementById(n);
-                x.value = n;
-                valores.push({ value: x.value });
+                valores.push(x.value);
                 n++;
             }
         }
-
+        var config = {
+            headers: {'X-My-Custom-Header': 'Header-Value'}
+          };
+        console.log(valores);
         axios.post(
             '/vetor-tabuleiro',
-            valores
+            valores,
+            config
         );
         
     };
@@ -74,30 +77,50 @@ var getScript = () => {
     return script;
 };
 
+var getInput = (nId, inputClass, inputStyle) => {
+    return `<input ${inputClass} 
+            ${inputStyle} 
+            type="number" 
+            id="${nId}" >`;
+}
+
 var getBody = () => {
 
     var content = '<h1> Tabuleiro Sudoku </h1>';
-    var inputs = '';
+    var tabuleiro = '<div style="background-color:grey; display:flex;">';
+    var inputClass = `class="casa-tabuleiro"`;
+    var inputStyle = `style="max-width: 10%; width: 30px;"`;
     var n = 1;
+    var nSetor = 1;
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
-            inputs += '<input class="casa-tabuleiro" style="max-width: 10%; width: 25px;" type="text" id="' + n + '">';
+            // inputs += '<input class="casa-tabuleiro" style="max-width: 10%; width: 30px;" type="number" id="' + n + '">';
+            inputStyle = `style="max-width: 10%; width: 30px; `
+            if((j % 3) == 2) {
+                inputStyle +=  `margin-right: 4px; `;
+            }
+            
+            if((i % 3) == 2) {
+                inputStyle +=  `margin-bottom: 4px; `;
+            }
+
+            inputStyle += `"`;
+            tabuleiro += getInput(n, inputClass, inputStyle);
             n++;
-//                First name: <input type="text" name="fname"><br>
         }
-        inputs += '<br>';
+        tabuleiro += '<br>';
     }
+
+    tabuleiro += '</div>';
 
     var submitButton = `<button type="button" onclick="submitSudoku()">Resolver!</button>`;
     var clearButton = `<button type="button" onclick="clearTable()">Limpar!</button>`;
-
-    
 
     content += 
     `
     <form>
     
-    ${inputs} 
+    ${tabuleiro} 
     ${submitButton}
     ${clearButton}
 
@@ -120,7 +143,7 @@ var getHtml = (bodyContent, scriptTag) => {
       <meta name="author" content="Plinio">
     </head>
     
-    <body>
+    <body onload="clearTable()">
       ${bodyContent}
 
       ${scriptTag}

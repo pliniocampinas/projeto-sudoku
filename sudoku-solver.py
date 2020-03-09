@@ -41,6 +41,12 @@ if(len(sys.argv) > 1):
 
 linear_table = []
 data_len = len(linear_data)
+
+if data_len < 1:
+    print("empty data")
+    sys.stdout.flush()
+    exit()
+
 i = 0
 while i < data_len:
     data_int = 0
@@ -95,10 +101,12 @@ def solve():
                 for n in range(1,10):
                     if possible(y,x,n):
                         tabuleiro_sudoku[y][x] = n
-                        solve()
+                        if(solve() == 1):
+                            return 1
                         tabuleiro_sudoku[y][x] = 0
-                return
+                return 0
     print(str(tabuleiro_sudoku))
+    return 1
     # input("More?")
 
 solve()

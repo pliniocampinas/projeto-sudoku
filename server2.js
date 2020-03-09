@@ -5,28 +5,26 @@ var path = require('path');
 var dynamicPages = require('./dynamic-pages');
 var resourceFactory = require('./resource-factory');
 
-var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
-    0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
-    0, 0, 7, 0, 0, 2, 0, 0, 0];
+// var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
+//     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
+//     0, 0, 7, 0, 0, 2, 0, 0, 0];
 
 const spawn = require("child_process").spawn;
-const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
+// const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
 
+// pythonProcess.stdout.on('data', (data) => {
+//     console.log("data.toString");
+//     console.log(data.toString());
+// });
 
+// pythonProcess.stderr.on('data',(data)=>{
+//     //Here data is of type buffer
+//     console.log(data.toString())
+//   })
 
-pythonProcess.stdout.on('data', (data) => {
-    console.log("data.toString");
-    console.log(data.toString());
-});
-
-pythonProcess.stderr.on('data',(data)=>{
-    //Here data is of type buffer
-    console.log(data.toString())
-  })
-
-pythonProcess.on('error', function(error) {
-    console.log("Error: bad command", error);
-});
+// pythonProcess.on('error', function(error) {
+//     console.log("Error: bad command", error);
+// });
 
 
 http.createServer(function (request, response) {
@@ -82,6 +80,51 @@ http.createServer(function (request, response) {
             }
         });
 
+    } else if(resource.type === 'data') {
+
+        if (request.method == 'POST') {
+            console.log('POST')
+            var body = ''
+            request.on('data', function(data) {
+                body += data
+            //   console.log('Partial body: ' + body)
+            })
+            request.on('end', function() {
+                console.log(body)
+                console.log('BodyType: ' + typeof body)
+
+                var parsedBody = JSON.parse(body)
+                // var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
+                //     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
+                //     0, 0, 7, 0, 0, 2, 0, 0, 0];
+                console.log(parsedBody)
+
+                var linearTable = []
+                parsedBody.forEach((item, index) => {
+                    linearTable.push(parseInt(item))
+                })
+
+                // var linearTable = body.oq? para ser equivalente ao de cima?
+                console.log(linearTable)
+                const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
+  
+                pythonProcess.stdout.on('data', (data) => {
+                    console.log("data.toString");
+                    console.log(data.toString());
+                    response.writeHead(200, {'Content-Type': 'text/html'})
+                    response.end('post received')
+                });
+
+                pythonProcess.stderr.on('data',(data)=>{
+                    //Here data is of type buffer
+                    console.log("data.toString err");
+                    console.log(data.toString())
+                    response.writeHead(500, {'Content-Type': 'text/html'})
+                    response.end('post received')
+                })
+
+            })
+        }
     } else {
         console.log('Pagina estatica NAO encontrada: ' + request.url);
         if( typeof resource.content === 'string' ) {
