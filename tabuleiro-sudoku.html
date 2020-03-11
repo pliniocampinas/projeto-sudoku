@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+    
+      <title>Sudoku</title>
+      <meta name="description" content="Sudoku-Solver">
+      <meta name="author" content="Plinio">
+    </head>
+    
+    <body onload="CreateTable()">
+
+        <h1> Tabuleiro Sudoku </h1>
+        <div class="container-tabuleiro">
+
+        </div>
+        
+        <button type="button" onclick="submitSudoku()">Resolver!</button>
+        <button type="button" onclick="clearTable()">Limpar!</button>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            function submitSudoku() {
+                    
+                var valores = []; 
+                var n = 1;
+                for (var i = 0; i < 9; i++) {
+                    for (var j = 0; j < 9; j++) {
+
+                        var x = document.getElementById(n);
+                        valores.push(x.value);
+                        n++;
+                    }
+                }
+                var config = {
+                    headers: {'X-My-Custom-Header': 'Header-Value'}
+                };
+                console.log(valores);
+                axios.post(
+                    '/vetor-tabuleiro',
+                    valores,
+                    config
+                );
+                
+            };
+
+            function clearTable() {
+                var n = 1;
+                var inputs = document.querySelectorAll(".casa-tabuleiro");
+
+                inputs.forEach((input, index) => {
+                    input.value = 0;
+                });
+            };
+
+            function CreateTable() {
+
+                tdStyle = 'margin: 2px; max-width: 30px;';
+                inputStyle = 'width: 25px;';
+                var n = 1;
+                var inputs = '';
+                for (var i = 0; i < 9; i++) {
+                    inputs += '<tr>';
+                    for (var j = 0; j < 9; j++) {
+                        inputs += 
+                        `
+                        <td style = "${tdStyle}">
+                        <input type="number" 
+                               class = "casa-tabuleiro" 
+                               id="${n}"  
+                               style = "${inputStyle}">
+                        </td>
+                        `;
+                        if(j == 2 || j == 5)
+                            inputs += `<td style = "${tdStyle} background-color: black;"> X </td>`;
+                        n++;
+                    }
+                    inputs += '</tr>';
+                    if(i == 2 || i == 5) {
+                        inputs += '<tr>';
+                        for(var z = 0; z < 11; z++)
+                            inputs += `<td style="height: 10px; background-color: black; "></td>`;
+                        inputs += '</tr>';
+                    }
+                }
+
+                var table = 
+                `
+                    <table style="border: 1px solid black; padding: 4px; background-color: black;"> 
+                        ${inputs}    
+                    </table>
+                `;
+                document.querySelector(".container-tabuleiro").innerHTML = table;
+
+            };
+        </script>    
+    </body>
+</html>

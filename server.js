@@ -33,7 +33,7 @@ http.createServer(function (request, response) {
     var resource = resourceFactory.getResource(request.url, request.data);
     var filePath = '';
     if(resource.type === 'static')
-        filePath = '.' + resource.content;
+        filePath = './' + resource.content;
     else if(resource.type === 'dynamic')
         filePath = '';
 
@@ -90,21 +90,14 @@ http.createServer(function (request, response) {
             //   console.log('Partial body: ' + body)
             })
             request.on('end', function() {
-                console.log(body)
-                console.log('BodyType: ' + typeof body)
-
                 var parsedBody = JSON.parse(body)
                 // var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
                 //     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
                 //     0, 0, 7, 0, 0, 2, 0, 0, 0];
-                console.log(parsedBody)
-
                 var linearTable = []
                 parsedBody.forEach((item, index) => {
                     linearTable.push(parseInt(item))
                 })
-
-                // var linearTable = body.oq? para ser equivalente ao de cima?
                 console.log(linearTable)
                 const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
   

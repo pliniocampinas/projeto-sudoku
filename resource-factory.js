@@ -6,7 +6,7 @@ const resources = [
     {url: '/', type: 'static', contentType: 'text/html', content: 'index.html', status: 200},
     {url: '/favicon.ico', type: 'static', contentType: 'image/x-icon', content: 'favicon.ico', status: 200},
     {url: '404', type: 'static', contentType: 'text/html', content: '404.html', status: 404},
-    {url: '/sudoku', type: 'dynamic', contentType: 'text/html', content: '', status: 200},
+    {url: '/sudoku', type: 'static', contentType: 'text/html', content: 'tabuleiro-sudoku.html', status: 200},
     {url: '/vetor-tabuleiro', type: 'data', contentType: 'text/html', content: '', status: 200}
 ];
 
