@@ -1,15 +1,13 @@
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
-
-var dynamicPages = require('./dynamic-pages');
 var resourceFactory = require('./resource-factory');
 
 // var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
 //     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
 //     0, 0, 7, 0, 0, 2, 0, 0, 0];
 
-const spawn = require("child_process").spawn;
+// const spawn = require("child_process").spawn;
 // const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
 
 // pythonProcess.stdout.on('data', (data) => {
@@ -28,7 +26,7 @@ const spawn = require("child_process").spawn;
 
 
 http.createServer(function (request, response) {
-    console.log('request ', request.data);
+    console.log('request ', request.url);
 
     var resource;
     var body = ''
@@ -51,17 +49,6 @@ http.createServer(function (request, response) {
         });
     } 
 
-    console.log("body:" + body + "-------------");
-    console.log(resource);
-
-    // var filePath = '';
-    // if(resource.type === 'static')
-    //     filePath = './' + resource.content;
-    // else if(resource.type === 'dynamic')
-    //     filePath = '';
-
-  
-
     // var extname = filePath === ''? '.html': String(path.extname(filePath)).toLowerCase();
     // var contentType = resource.contentType;
     // var mimeTypes = {
@@ -80,9 +67,6 @@ http.createServer(function (request, response) {
     //     '.otf': 'application/font-otf',
     //     '.svg': 'application/image/svg+xml'
     // };
-
-    console.log(request.url);
-
 
 }).listen(8125);
 console.log('Server running at http://127.0.0.1:8125/');

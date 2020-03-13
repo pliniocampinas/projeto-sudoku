@@ -1,6 +1,6 @@
 from functools import reduce
 import numpy as np
-
+import json
 import sys
 
 # print("--- system args ---")
@@ -70,6 +70,10 @@ for i in range(9):
 tabuleiro_resolvido = tabuleiro_sudoku[:]
 resolvido = False
 
+def printTabuleiroJSON(tabuleiro):
+    # print(str(tabuleiro))
+    print(json.dumps({'table': tabuleiro.tolist()}))
+
 def possible(y,x,n):
     global tabuleiro_sudoku
     for i in range(0,9):
@@ -105,7 +109,7 @@ def solve():
                             return 1
                         tabuleiro_sudoku[y][x] = 0
                 return 0
-    print(str(tabuleiro_sudoku))
+    printTabuleiroJSON((tabuleiro_sudoku))
     return 1
     # input("More?")
 

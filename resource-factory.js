@@ -2,7 +2,6 @@ var http = require('http');
 var fs = require('fs');
 var path = require('path');
 // Paginas de conteudo
-var sudokuPageFactory = require('./sudoku-page-factory');
 const spawn = require("child_process").spawn;
 
 
@@ -63,14 +62,6 @@ const resources = [
     }
 ];
 
-var getDataResource = (url) => {
-    console.log(`getDynamicPageContent da url [${url}]`);
-    if(url === '/vetor-tabuleiro')
-        return sudokuPageFactory.getPage();
-    else
-        return '';
-}
-
 async function getTableSolved(linearTable, callback) {
     const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
     
@@ -94,11 +85,9 @@ async function getTableSolved(linearTable, callback) {
     })
 }
 
-
 // // async function 
 async function readResourceFile(url, callback) {
     fs.readFile(url, function(error, content) {
-        // response.writeHead(200, { 'Content-Type': contentType });
         console.log("content readfile");
         console.log(content);
         callback(error, status, content);
@@ -111,39 +100,29 @@ async function _getResource(url, body, callback){
     if(resource === undefined)
         resource = resources.filter(x => x.url == '404')[0];
 
-        // var promise = await () => {
     if(resource.type === 'static') {
         console.log('Pagina estatica encontrada, lendo file path:' + resource.filePath);
-        // readResourceFile(resource.filePath, function(error, status, content)
         fs.readFile(resource.filePath, function(error, content) {
             if (error) {    
                 if(error.code == 'ENOENT'){
                     fs.readFile('./404.html', function(error, content) {
-                        // response.writeHead(200, { 'Content-Type': contentType });
                         resource.content = content;
                         console.log(content);
                         resource.status = 404;
                         callback(resource);
-                        // response.writeHead(resource.status, resource.header);
-                        // response.end(resource.content, resource.encoding);
                     });
                 }
                 else {
                     resource.content = 'Sorry, check with the site admin for error: '+error.code+' ..\n';
                     resource.status = 500;
                     callback(resource);
-                    // response.writeHead(resource.status, resource.header);
-                    // response.end(resource.content, resource.encoding);
                 }
             }
             else {
                 resource.content = content;
                 console.log(content);
                 resource.status = 404;
-
                 callback(resource);
-                // response.writeHead(resource.status, resource.header);
-                // response.end(resource.content, resource.encoding);
             }
         });
     } else if(resource.type === 'data') {
@@ -163,22 +142,6 @@ async function _getResource(url, body, callback){
             callback(resource);
         });
         
-        // response.writeHead(resource.status, resource.header);
-        // response.end(resource.content, resource.encoding);
-        // const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
-
-        // pythonProcess.stdout.on('data', (data) => {
-        //     console.log("data.toString");
-        //     console.log(data.toString());
-        //     content.status = 200;
-        // });
-
-        // pythonProcess.stderr.on('data',(data)=>{
-        //     //Here data is of type buffer
-        //     console.log("data.toString err");
-        //     console.log(data.toString())
-        //     content.status = 500;
-        // })
     }
 }
 
