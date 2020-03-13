@@ -87,7 +87,7 @@ var getInput = (nId, inputClass, inputStyle) => {
 var getBody = () => {
 
     var content = '<h1> Tabuleiro Sudoku </h1>';
-    var tabuleiro = '<div style="background-color:grey; display:flex;">';
+    var tabuleiro = '<div style="background-color:grey; ">';
     var inputClass = `class="casa-tabuleiro"`;
     var inputStyle = `style="max-width: 10%; width: 30px;"`;
     var n = 1;
