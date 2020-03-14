@@ -63,7 +63,8 @@ const resources = [
 ];
 
 async function getTableSolved(linearTable, callback) {
-    const pythonProcess = spawn('python',["sudoku-solver.py", linearTable]);
+    const max_results = 1
+    const pythonProcess = spawn('python',["sudoku-solver.py", linearTable, max_results]);
     
     var status = 1;
     var dataStr = '';

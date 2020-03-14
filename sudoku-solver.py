@@ -34,10 +34,18 @@ tabuleiro_sudoku_teste = np.zeros((9, 9), dtype=np.int16)
 # set_linha_tabuleiro(tabuleiro_sudoku, 9, [0, 0, 7, 0, 0, 2, 0, 0, 0])
 
 linear_data = []
+max_results = 10
 
+# Read argv's
+# argv[1] => linear_table_input
+# argv[2] => max_results
 if(len(sys.argv) > 1):
     linear_data = list(sys.argv[1])
+    if(len(sys.argv) > 2):
+        max_results = int(sys.argv[2]) if int(sys.argv[2]) < 10 else 10
+    n_results = 0
 # print(linear_data)
+
 
 linear_table = []
 data_len = len(linear_data)
@@ -59,20 +67,25 @@ while i < data_len:
         linear_table.append(data_int)
     i = i + 1
 
-# print(len(linear_table))
-
 for i in range(9):
     set_linha_tabuleiro(tabuleiro_sudoku, i + 1, linear_table[i * 9: (i * 9) + 9])
 
-# print("tabuleiro_sudoku_teste")
-# print(tabuleiro_sudoku_teste)
-
 tabuleiro_resolvido = tabuleiro_sudoku[:]
 resolvido = False
+resultadoJSON = []
 
 def printTabuleiroJSON(tabuleiro):
     # print(str(tabuleiro))
-    print(json.dumps({'table': tabuleiro.tolist()}))
+    print(json.dumps({'results': tabuleiro.tolist()}))
+
+def recordResultJSON(tabuleiro):
+    # print(str(tabuleiro))
+    global resultadoJSON
+    resultadoJSON.append(tabuleiro.tolist())
+
+def printResultsJSON():
+    global resultadoJSON
+    print(json.dumps({'results': resultadoJSON}))
 
 def possible(y,x,n):
     global tabuleiro_sudoku
@@ -97,21 +110,28 @@ def set_tabuleiro_resolvido(tabuleiro):
         resolvido = True
         tabuleiro_resolvido = tabuleiro[:]
 
+
+
 def solve():
     global tabuleiro_sudoku 
+    global max_results 
+    global n_results 
     for y in range(9):
         for x in range(9):
             if tabuleiro_sudoku[y][x] == 0:
                 for n in range(1,10):
                     if possible(y,x,n):
                         tabuleiro_sudoku[y][x] = n
-                        if(solve() == 1):
-                            return 1
+                        n_results = solve()
+                        if(n_results == max_results):
+                            return n_results
                         tabuleiro_sudoku[y][x] = 0
-                return 0
-    printTabuleiroJSON((tabuleiro_sudoku))
-    return 1
+                return n_results
+    # printTabuleiroJSON((tabuleiro_sudoku))
+    recordResultJSON(tabuleiro_sudoku)
+    return n_results + 1
     # input("More?")
 
 solve()
+printResultsJSON()
 sys.stdout.flush()
