@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+    
+      <title>Sudoku</title>
+      <meta name="description" content="Sudoku-Solver">
+      <meta name="author" content="Plinio">
+
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script type="application/javascript" src="app.js"></script>  
+      <link rel="shortcut icon" href="/favicon.ico"/>
+    </head>
+
+    <body onload="createTable()">
+
+        <h1> Tabuleiro Sudoku </h1>
+        <div class="container-tabuleiro">
+
+        </div>
+        
+        <button type="button" onclick="submitSudoku()">Resolver!</button>
+        <button type="button" onclick="clearTable()">Limpar!</button>
+        <hr>
+        <div class="container-resultados">
+
+        </div>
+  
+    </body>
+</html>

@@ -34,6 +34,15 @@ const resources = [
         status: 200
     },
     {
+        url: '/app.js', 
+        type: 'static', 
+        header: { 'Content-Type': 'application/javascript'}, 
+        encoding: 'utf-8',
+        filePath: 'app.js', 
+        content: '', 
+        status: 200
+    },
+    {
         url: '/favicon.ico', 
         type: 'static', 
         header: { 'Content-Type': 'image/x-icon'}, 
@@ -69,8 +78,8 @@ async function getTableSolved(linearTable, callback) {
     var status = 1;
     var dataStr = '';
     pythonProcess.stdout.on('data', (data) => {
-        console.log("data.toString");
-        console.log(data.toString());
+        // console.log("data.toString");
+        // console.log(data.toString());
         dataStr = data.toString();
         status = 200;
         callback(status, dataStr);
@@ -86,15 +95,6 @@ async function getTableSolved(linearTable, callback) {
     })
 }
 
-// // async function 
-async function readResourceFile(url, callback) {
-    fs.readFile(url, function(error, content) {
-        console.log("content readfile");
-        console.log(content);
-        callback(error, status, content);
-    })
-} 
-
 async function _getResource(url, body, callback){
     var resource = resources.filter(x => x.url == url)[0];
     // console.log(body);
@@ -102,32 +102,8 @@ async function _getResource(url, body, callback){
         resource = resources.filter(x => x.url == '404')[0];
 
     if(resource.type === 'static') {
-        console.log('Pagina estatica encontrada, lendo file path:' + resource.filePath);
-        fs.readFile(resource.filePath, function(error, content) {
-            if (error) {    
-                if(error.code == 'ENOENT'){
-                    fs.readFile('./404.html', function(error, content) {
-                        resource.content = content;
-                        console.log(content);
-                        resource.status = 404;
-                        callback(resource);
-                    });
-                }
-                else {
-                    resource.content = 'Sorry, check with the site admin for error: '+error.code+' ..\n';
-                    resource.status = 500;
-                    callback(resource);
-                }
-            }
-            else {
-                resource.content = content;
-                console.log(content);
-                resource.status = 404;
-                callback(resource);
-            }
-        });
+        callback(resource);
     } else if(resource.type === 'data') {
-
         var parsedBody = JSON.parse(body)
         // var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
         //     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
