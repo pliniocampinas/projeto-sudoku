@@ -1,7 +1,7 @@
 // import axios from 'axios';
 
 function submitSudoku() {
-    document.querySelector(".container-resultados").innerHTML = '';
+    document.querySelector(".results-container").innerHTML = '';
     var valores = []; 
     var n = 1;
     for (var i = 0; i < 9; i++) {
@@ -37,7 +37,7 @@ function submitSudoku() {
 
 function clearTable() {
     var n = 1;
-    var inputs = document.querySelectorAll(".casa-tabuleiro");
+    var inputs = document.querySelectorAll(".table-container input");
 
     inputs.forEach((input, index) => {
         input.value = 0;
@@ -45,9 +45,6 @@ function clearTable() {
 };
 
 function createTable() {
-
-    tdStyle = 'margin: 2px; max-width: 30px;';
-    inputStyle = 'width: 25px;';
     var n = 1;
     var inputs = '';
     for (var i = 0; i < 9; i++) {
@@ -55,40 +52,31 @@ function createTable() {
         for (var j = 0; j < 9; j++) {
             inputs += 
             `
-            <td style = "${tdStyle}">
-            <input type="number" 
-                   class = "casa-tabuleiro" 
+            <td>
+            <input style = "${ (j == 2 || j == 5)?'border-right:4px solid black;':''  }
+                            ${ (i == 2 || i == 5)?'border-bottom:4px solid black;':''  }"
+                   type="number" 
                    id="${n}"  
-                   style = "${inputStyle}"
                    value = 0>
             </td>
             `;
-            if(j == 2 || j == 5)
-                inputs += `<td style = "${tdStyle} background-color: black;"> X </td>`;
             n++;
         }
         inputs += '</tr>';
-        if(i == 2 || i == 5) {
-            inputs += '<tr>';
-            for(var z = 0; z < 11; z++)
-                inputs += `<td style="height: 10px; background-color: black; "></td>`;
-            inputs += '</tr>';
-        }
     }
 
     var table = 
     `
-        <table style="border: 1px solid black; padding: 4px; background-color: black;"> 
+        <table> 
             ${inputs}    
         </table>
     `;
-    document.querySelector(".container-tabuleiro").innerHTML = table;
+    document.querySelector(".table-container").innerHTML = table;
 
 };
 
 function createResultTable(linearTable, n_result) {
 
-    var tdStyle = 'margin: 2px; width: 30px; border: 1px solid black;';
     var index = 0;
     var table_content = '';
     for (var i = 0; i < 9; i++) {
@@ -96,8 +84,7 @@ function createResultTable(linearTable, n_result) {
         for (var j = 0; j < 9; j++) {
             table_content += 
             `
-            <td style = "${tdStyle} 
-                         ${ (j == 2 || j == 5)?'border-right:4px solid black;':''  }
+            <td style = "${ (j == 2 || j == 5)?'border-right:4px solid black;':''  }
                          ${ (i == 2 || i == 5)?'border-bottom:4px solid black;':''  }">
                 ${linearTable[index]}
             </td>
@@ -112,10 +99,10 @@ function createResultTable(linearTable, n_result) {
         <hr>
         <h3> Resultado ${n_result} </h1>
         <hr>
-        <table style="border: 4px solid black;" > 
+        <table> 
             ${table_content}    
         </table>
     `;
-    document.querySelector(".container-resultados").innerHTML += result_display;
+    document.querySelector(".results-container").innerHTML += result_display;
 
 };

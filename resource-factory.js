@@ -43,6 +43,15 @@ const resources = [
         status: 200
     },
     {
+        url: '/app.css', 
+        type: 'static', 
+        header: { 'Content-Type': 'text/css'}, 
+        encoding: 'utf-8',
+        filePath: 'app.css', 
+        content: '', 
+        status: 200
+    },
+    {
         url: '/favicon.ico', 
         type: 'static', 
         header: { 'Content-Type': 'image/x-icon'}, 
@@ -105,9 +114,6 @@ async function _getResource(url, body, callback){
         callback(resource);
     } else if(resource.type === 'data') {
         var parsedBody = JSON.parse(body)
-        // var linearTable = [6, 0, 4, 0, 0, 7, 0, 0, 0, 8, 0, 0, 0, 0, 3, 0, 5, 6, 0, 3, 0, 9, 0, 0, 8, 0, 0, 0, 0, 0, 5, 0, 0, 0, 9, 0,
-        //     0, 0, 8, 0, 1, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 0, 0, 3, 8, 0, 0, 1, 0, 0,
-        //     0, 0, 7, 0, 0, 2, 0, 0, 0];
         var linearTable = []
         parsedBody.forEach((item, index) => {
             linearTable.push(parseInt(item))
