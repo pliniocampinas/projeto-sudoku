@@ -112,7 +112,7 @@ async function _getResource(url, body, callback){
 
     if(resource.type === 'static') {
         callback(resource);
-    } else if(resource.type === 'data') {
+    } else if(resource.url === '/vetor-tabuleiro') {
         var parsedBody = JSON.parse(body)
         var linearTable = []
         parsedBody.forEach((item, index) => {
@@ -125,6 +125,8 @@ async function _getResource(url, body, callback){
             callback(resource);
         });
         
+    } else {
+        callback(resource);
     }
 }
 
