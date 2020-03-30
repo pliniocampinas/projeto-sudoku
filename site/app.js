@@ -1,4 +1,5 @@
 // import axios from 'axios';
+var url = 'http://127.0.0.1:8125';
 
 function submitSudoku() {
     document.querySelector(".results-container").innerHTML = '';
@@ -16,11 +17,8 @@ function submitSudoku() {
         headers: {'X-My-Custom-Header': 'Header-Value'}
     };
     console.log(valores);
-    axios.post(
-        '/vetor-tabuleiro',
-        valores,
-        config
-    )
+    var maxResults = 3;
+    axios.get(`${url}/vetor-tabuleiro?table=${valores}&maxResults=${maxResults}`)
     .then( (response) => {
         // console.log("response");
         // console.log(response.data);
