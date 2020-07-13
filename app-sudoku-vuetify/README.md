@@ -1,4 +1,4 @@
-# app-sudoku
+# app-sudoku-vuetify
 
 ## Project setup
 ```
