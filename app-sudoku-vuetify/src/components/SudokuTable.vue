@@ -2,7 +2,7 @@
   <div id="sudoku-table">
       <v-container>
 
-        <v-row
+        <v-row class="margin-blocks"
           v-for="(index) in 9"
           v-bind:key="index"
         >
@@ -46,9 +46,15 @@ export default {
 <style scoped>
 
 #sudoku-table {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  background-color: blue;
 }
 .tb-block {
   margin: auto;
+  max-width: 8.5%;
+}
+
+.margin-blocks {
+  margin-top: 2%;
 }
 </style>

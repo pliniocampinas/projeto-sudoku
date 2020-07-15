@@ -7,7 +7,10 @@
           align="center"
           justify="center"
         >
-          <v-col class="text-center">
+          <v-col class="text-center" 
+            :lg="8"
+            :md="8"
+          >
             <h1> Alou brasil</h1>
             <sudoku-table/>
             <control-panel/>
