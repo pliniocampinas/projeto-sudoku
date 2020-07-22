@@ -1,7 +1,5 @@
 <template>
-  <div id="sudoku-table">
-      <!-- <label> [{{index}}]</label> -->
-    <!-- <b-form-input v-model="value" ></b-form-input> -->
+  <div id="sudoku-block">
     <div class="input-container">
       <input type="number" v-model="value" class="rounded-input">
     </div>
@@ -14,8 +12,17 @@
 export default {
   name: 'TableBlock',
   props: {
-    value: Number,
-    index: Number
+    index: { i: 0}
+  },
+  computed: {
+    value: {
+      get: function() {
+        return this.index.i;
+      },
+      set: function(newValue) {
+        this.index.i = newValue;
+      }
+    },
   }
 }
 </script>
@@ -25,7 +32,9 @@ export default {
 /* #sudoku-table {
     background-color: blue;
 } */
-
+#sudoku-block {
+  max-width: 33%;
+}
 
 .input-sudoku input {
   text-align: center;
@@ -34,11 +43,12 @@ export default {
 } 
 
 .input-container input {
-  max-width: 100%;
+  max-width: 90%;
+  margin: 3%;
   text-align: center;
   font-weight: bolder;
   border-radius: 15%;
-  border: 4px solid #2d9fd9
+  border: 4px solid #2d9fd9;
 }
 
 </style>

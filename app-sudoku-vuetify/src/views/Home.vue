@@ -10,10 +10,18 @@
           <v-col class="text-center" 
             :lg="8"
             :md="8"
+            :sm="12"
           >
             <h1> Alou brasil</h1>
-            <sudoku-table/>
-            <control-panel/>
+            <sudoku-table ref="tableRef"/>
+            <control-panel v-on:resolver="overlay = true"/>
+
+            <v-overlay
+              :absolute="absolute"
+              :value="overlay"
+            >
+              <v-progress-circular indeterminate size="64"></v-progress-circular>
+            </v-overlay>
           </v-col>
 
         </v-row>
@@ -30,6 +38,21 @@ export default {
   components: {
     SudokuTable,
     ControlPanel,
-  }
+  },
+  data: function() {
+    return {
+      absolute: true,
+      overlay: false,
+      tableArray: [],
+    }
+  },
+  watch: {
+      overlay (val) {
+        val && setTimeout(() => {
+          console.log(this.$refs.tableRef.tableValues);
+          this.overlay = false;
+        }, 1000)
+      },
+  },
 }
 </script>
