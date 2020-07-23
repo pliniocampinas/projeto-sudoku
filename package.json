@@ -1,0 +1,25 @@
+{
+  "name": "projeto-sudoku",
+  "version": "1.0.0",
+  "description": "resolvedor de sudoku",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pliniocampinas/projeto-sudoku.git"
+  },
+  "keywords": [
+    "sudoku",
+    "python",
+    "node"
+  ],
+  "author": "plinio campinas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pliniocampinas/projeto-sudoku/issues"
+  },
+  "homepage": "https://github.com/pliniocampinas/projeto-sudoku#readme"
+}
