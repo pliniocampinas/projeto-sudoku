@@ -25,13 +25,26 @@
           </v-col>
 
         </v-row>
+
+        <hr>
+
+        <v-row>
+          <v-col>
+            <div ref="resultRoot"></div>
+          </v-col>
+        </v-row>
  </v-container>
 </template>
 
 <script>
 // @ is an alias to /src
-import SudokuTable from '@/components/SudokuTable'
-import ControlPanel from '@/components/ControlPanel'
+import SudokuTable from '@/components/SudokuTable';
+import ControlPanel from '@/components/ControlPanel';
+import axios from 'axios';
+axios.defaults.baseURL = 'http://127.0.0.1:8125/';
+
+import Vue from 'vue';
+var SudokuTableClass = Vue.extend(SudokuTable);
 
 export default {
   name: 'Home',
@@ -54,5 +67,30 @@ export default {
         }, 1000)
       },
   },
+  method: { 
+    submitTable() {
+      let valores = this.$refs.tableRef.tableValues;
+      let maxResults = 3;
+      axios.get(`/vetor-tabuleiro?table=${valores}&maxResults=${maxResults}`)
+        .then( (response) => {
+            console.log("response");
+            console.log(response.data);
+            this.createResultTable(response.data.results);
+        });
+    },
+    createResultTable(results) {
+      let parsedData;
+      results.forEach((result) => {
+        // for each solution recived...
+        parsedData = result.flat();
+        // ... a new table with results is created
+        var instance = new SudokuTableClass();
+        instance.$mount();
+        instance.tableValues = parsedData;
+        this.$refs.resultRoot.appendChild(instance.$el);
+      });
+
+    }
+  }
 }
 </script>

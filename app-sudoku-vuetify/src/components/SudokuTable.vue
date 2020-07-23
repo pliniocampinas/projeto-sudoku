@@ -152,7 +152,13 @@ export default {
       get: function() {
         return this.createTableArray(this.tableObjects);
       },
-      set: function() {}
+      set: function(flattenTable) {
+        if(this.tableObjects && flattenTable) {
+          flattenTable.forEach(function(item, index) {
+            this.tableObjects[index] = item;
+          });
+        }
+      }
     },
   },
   created() {

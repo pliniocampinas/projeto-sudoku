@@ -12,15 +12,21 @@
 export default {
   name: 'TableBlock',
   props: {
-    index: { i: 0}
+    index: { i: 0 }
+  },
+  data: function() {
+    return {
+      dValue: 0
+    }
   },
   computed: {
     value: {
       get: function() {
-        return this.index.i;
+        return this.dValue;
       },
       set: function(newValue) {
-        this.index.i = newValue;
+        if(this.dValue)
+          this.dValue = newValue;
       }
     },
   }
