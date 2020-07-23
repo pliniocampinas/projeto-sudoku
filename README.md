@@ -1,5 +1,5 @@
 # projeto-sudoku
-A micro API built on node.js along with python, the one responsible for solving the sudoku table.
+Micro API built on node.js along with python, the one responsible for solving the sudoku table.
 Built entirely with node native tools, no external dependencies besides python.
 
 ## PT-BR ##
