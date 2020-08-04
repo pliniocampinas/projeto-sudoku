@@ -14,7 +14,7 @@
           >
             <h1> Alou brasil</h1>
             <sudoku-table ref="tableRef"/>
-            <control-panel v-on:resolver="overlay = true"/>
+            <control-panel @resolver="submitTable"/>
 
             <v-overlay
               :absolute="absolute"
@@ -62,21 +62,23 @@ export default {
   watch: {
       overlay (val) {
         val && setTimeout(() => {
-          console.log(this.$refs.tableRef.tableValues);
+          console.log(this.$refs.tableRef.table);
           this.overlay = false;
         }, 1000)
       },
   },
-  method: { 
+  methods: {
     submitTable() {
-      let valores = this.$refs.tableRef.tableValues;
+      this.overlay = true;
+      let valores = this.$refs.tableRef.table;
       let maxResults = 3;
       axios.get(`/vetor-tabuleiro?table=${valores}&maxResults=${maxResults}`)
         .then( (response) => {
             console.log("response");
             console.log(response.data);
             this.createResultTable(response.data.results);
-        });
+        })
+        .catch(err => console.log(err));
     },
     createResultTable(results) {
       let parsedData;
@@ -86,8 +88,10 @@ export default {
         // ... a new table with results is created
         var instance = new SudokuTableClass();
         instance.$mount();
-        instance.tableValues = parsedData;
         this.$refs.resultRoot.appendChild(instance.$el);
+        instance.tableValues = parsedData;
+        console.log("parsedData");
+        console.log(parsedData);
       });
 
     }

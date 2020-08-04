@@ -1,7 +1,7 @@
 <template>
   <div id="sudoku-block">
     <div class="input-container">
-      <input type="number" v-model="value" class="rounded-input">
+      <input type="number" @change="onChange" v-model="value" class="rounded-input">
     </div>
   </div>
 </template>
@@ -12,23 +12,17 @@
 export default {
   name: 'TableBlock',
   props: {
-    index: { i: 0 }
+      index: Number,
   },
   data: function() {
     return {
-      dValue: 0
+      value: 0,
     }
   },
-  computed: {
-    value: {
-      get: function() {
-        return this.dValue;
-      },
-      set: function(newValue) {
-        if(this.dValue)
-          this.dValue = newValue;
-      }
-    },
+  methods: {
+    onChange() {
+      this.$emit('change', this.value, this.index);
+    }
   }
 }
 </script>
