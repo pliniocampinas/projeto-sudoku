@@ -34,8 +34,10 @@ export default {
     max-width: 45%;
     width: 45%;
     height: 9vh;
-    background: rgb(172, 90, 61);
-    color: white;
+    background: #F78764;
+    color: #EBEBD3;
+    font-size: x-large;
+    font-weight: bolder;
     box-shadow: 7px 7px 3px rgba(116, 113, 113, 0.8);
     border: 1px solid rgba(116, 113, 113, 0.8);
     box-sizing: border-box;

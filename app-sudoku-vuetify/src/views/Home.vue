@@ -110,13 +110,13 @@ export default {
 
 .h1-home-sudoku {
   color:white;
-  background: rgb(172, 90, 61);
+  background: #F78764;
   margin: 3px auto;
   border-radius: 3px;
 }
 
 .container-home {
-  background: rgb(245, 219, 170);
+  background: #EBEBD3;
 }
 
 </style>
