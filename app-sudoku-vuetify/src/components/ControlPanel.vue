@@ -34,10 +34,12 @@ export default {
     max-width: 45%;
     width: 45%;
     height: 9vh;
-    background-color: lightgray;
+    background: rgb(172, 90, 61);
+    color: white;
     box-shadow: 7px 7px 3px rgba(116, 113, 113, 0.8);
     border: 1px solid rgba(116, 113, 113, 0.8);
     box-sizing: border-box;
-    
+    border-radius: 4px;
+    outline: none;
 }
 </style>
