@@ -12,7 +12,7 @@
             :md="8"
             :sm="12"
           >
-            <h1 class="h1-home-sudoku"> Sudoku Taburo </h1>
+            <h1 class="h1-home-sudoku"> Sudoku </h1>
             <sudoku-table ref="tableRef"/>
             <control-panel @resolver="submitTable"/>
 
@@ -56,10 +56,12 @@ var TableWrapperClass = Vue.extend(TableWrapper);
 
 export default {
   name: 'Home',
+
   components: {
     SudokuTable,
     ControlPanel,
   },
+
   data: function() {
     return {
       absolute: true,
@@ -67,13 +69,15 @@ export default {
       tableArray: [],
     }
   },
+
   watch: {
-      overlay (val) {
-        val && setTimeout(() => {
-          this.overlay = false;
-        }, 1000)
-      },
+    overlay (val) {
+      val && setTimeout(() => {
+        this.overlay = false;
+      }, 1000)
+    },
   },
+  
   methods: {
     submitTable() {
       this.overlay = true;
@@ -81,14 +85,14 @@ export default {
       let maxResults = 3;
       axios.get(`/vetor-tabuleiro?table=${valores}&maxResults=${maxResults}`)
         .then( (response) => {
-            this.createResultTable(response.data.results);
+          this.createResultTable(response.data.results);
         })
         .catch(err => console.log(err.response));
     },
     createResultTable(results) {
       let parsedData;
       results.forEach((result) => {
-        // for each solution recived...
+        // for each solution received...
         parsedData = result.flat();
         // ... a new table with results is created
         var instance = new SudokuTableClass();
