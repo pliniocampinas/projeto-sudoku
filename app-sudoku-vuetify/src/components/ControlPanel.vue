@@ -39,9 +39,14 @@ export default {
     font-size: x-large;
     font-weight: bolder;
     box-shadow: 7px 7px 3px rgba(116, 113, 113, 0.8);
+    background-color: rgba(116, 113, 113, 1);
     border: 1px solid rgba(116, 113, 113, 0.8);
     box-sizing: border-box;
     border-radius: 4px;
     outline: none;
+}
+
+.cp-btn:hover {
+    opacity: 0.7;
 }
 </style>

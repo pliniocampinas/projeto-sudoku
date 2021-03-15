@@ -114,7 +114,9 @@ export default {
 
 .h1-home-sudoku {
   color:white;
-  background: #F78764;
+  background: transparent !important;;
+  color: #3f51b5 !important;;
+  border: 2px solid #3f51b5 !important;
   margin: 3px auto;
   border-radius: 3px;
 }
